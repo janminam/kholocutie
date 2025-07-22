@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1514516872028-1c1b1c1c1c1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDF8fGZsb3dlciUyMGJvdHRvbXxlbnwwfHx8fDE2MzY0MjY0Mjg&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .background {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .question-box {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .options button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .slider {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .flower-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none; /* Initially hidden */
+        }
+
+        .explosion {
+            display: none; /* Initially hidden */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="mainPage">
+        <div class="question-box" id="questionBox">
+            <h1>Do you love me?</h1>
+            <div class="emojis">👀👀</div>
+            <div class="options">
+                <button id="yes">❤️ Yes</button>
+                <button id="no">💔 No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="background" id="sliderPage" style="display: none;">
+        <div class="question-box">
+            <h1>How much do you love me?</h1>
+            <input type="range" min="0" max="100" value="50" class="slider" id="loveSlider">
+            <p id="sliderValue">50</p>
+        </div>
+        <img src="https://gifsec.com/wp-content/uploads/2022/10/explosion-gif-7.gif" class="explosion" id="explosionGif" alt="Explosion GIF">
+        <div class="flower-animation" id="flowerAnimation"></div>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+
+        document.getElementById('no').addEventListener('click', function() {
+            noClickCount++;
+            moveButton(this);
+            if (noClickCount === 20) {
+                window.location.href = "https://res.cloudinary.com/dtjjgiitl/image/upload/q_auto:good,f_auto,fl_progressive/v1753181432/v8zntfsnjwqfucq6yrsy.jpg";
+            }
+        });
+
+        document.getElementById('yes').addEventListener('click', function() {
+            document.getElementById('mainPage').style.display = 'none'; // Hide main page
+            document.getElementById('sliderPage').style.display = 'block'; // Show slider page
+        });
+
+        const slider = document.getElementById("loveSlider");
+        const sliderValue = document.getElementById("sliderValue");
+        const explosionGif = document.getElementById("explosionGif");
+        const flowerAnimation = document.getElementById("flowerAnimation");
+
+        let sliderValueOnChange = 50; // Initial value
+
+        slider.oninput = function() {
+            sliderValue.innerHTML = this.value; // Display the current slider value
+            sliderValueOnChange = this.value; // Update the value on change
+        }
+
+        slider.onmouseup = function() {
+            // Check the value when the user releases the slider
+            if (sliderValueOnChange == 0) {
+                explosionGif.style.display = "block"; // Show explosion GIF
+            } else if (sliderValueOnChange == 100) {
+                showFlowerAnimation(); // Show flower animation
+            } else if (sliderValueOnChange < 50) {
+                explosionGif.style.display = "block"; // Show explosion GIF
+            }
+        }
+
+        function moveButton(button) {
+            const randomX = Math.random() * (window.innerWidth - 100);
+            const randomY = Math.random() * (window.innerHeight - 100);
+            const randomSize = Math.random() * (50 - 20) + 20; // Random size between 20px and 50px
+
+            button.style.position = 'absolute';
+            button.style.left = `${randomX}px`;
+            button.style.top = `${randomY}px`;
+            button.style.fontSize = `${randomSize}px`;
+        }
+
+        function showFlowerAnimation() {
+            flowerAnimation.style.display = "block"; // Show flower animation
+            // Create flower shower effect
+            for (let i = 0; i < 100; i++) {
+                const flower = document.createElement("img");
+                flower.src = "https://example.com/flower.png"; // Replace with actual flower image URL
+                flower.style.position = "absolute";
+                flower.style.width = "30px"; // Adjust size as needed
+                flower.style.left = Math.random() * 100 + "vw"; // Random horizontal position
+                flower.style.top = Math.random() * 100 + "vh"; // Random vertical position
+                flowerAnimation.appendChild(flower);
+                setTimeout(() => {
+                    flower.remove(); // Remove flower after some time
+                }, 3000); // Adjust duration as needed
+            }
+        }
+    </script>
+</body>
+</html>
